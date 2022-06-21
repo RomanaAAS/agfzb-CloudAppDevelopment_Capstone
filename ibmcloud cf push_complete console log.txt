@@ -1,0 +1,178 @@
+ibmcloud cf push
+Invoking 'cf push'...
+
+Pushing from manifest to org romana.leitgeb247@gmail.com / space rl_djangoapp as romana.leitgeb247@gmail.com...
+Using manifest file /home/project/agfzb-CloudAppDevelopment_Capstone/server/manifest.yml
+Deprecation warning: Use of 'buildpack' attribute in manifest is deprecated in favor of 'buildpacks'. Please see https://docs.cloudfoundry.org/devguide/deploy-apps/manifest-attributes.html#deprecated for alternatives and other app manifest deprecations. This feature will be removed in the future.
+
+Getting app info...
+Creating app with these attributes...
++ name:         rl_djangoapp
+  path:         /home/project/agfzb-CloudAppDevelopment_Capstone/server
+  buildpacks:
++   python_buildpack
++ memory:       128M
+  routes:
++   rl_djangoapp.mybluemix.net
+
+Creating app with these attributes...
++ name:         rl_djangoapp-nginx
+  path:         /home/project/agfzb-CloudAppDevelopment_Capstone/server
+  buildpacks:
++   staticfile_buildpack
++ memory:       128M
+  routes:
++   rl_djangoapp.mybluemix.net/static
+
+Creating app rl_djangoapp...
+Mapping routes...
+Comparing local files to remote cache...
+Packaging files to upload...
+Uploading files...
+ 682.73 KiB / 682.73 KiB [======================================================================] 100.00% 2s
+
+Waiting for API to complete processing files...
+
+Staging app and tracing logs...
+   Downloading python_buildpack...
+   Downloaded python_buildpack
+   Cell e6e14676-103b-4105-9e13-019090a8446c creating container for instance ea8fe212-6ef2-4487-926b-8ab88fdc27c3
+   Security group rules were updated
+   Cell e6e14676-103b-4105-9e13-019090a8446c successfully created container for instance ea8fe212-6ef2-4487-926b-8ab88fdc27c3
+   Downloading app package...
+   Downloaded app package (682.7K)
+   -----> Python Buildpack version 1.7.53
+   -----> Supplying Python
+   -----> Installing python 3.10.4
+   Download [https://buildpacks.cloudfoundry.org/dependencies/python/python_3.10.4_linux_x64_cflinuxfs3_e053ca78.tgz]
+   Using python's pip module
+   -----> Running Pip Install
+   Collecting requests
+   Downloading requests-2.28.0-py3-none-any.whl (62 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.8/62.8 KB 2.4 MB/s eta 0:00:00
+   Collecting Django
+   Downloading Django-4.0.5-py3-none-any.whl (8.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.0/8.0 MB 17.8 MB/s eta 0:00:00
+   Collecting gunicorn==20.0.4
+   Downloading gunicorn-20.0.4-py2.py3-none-any.whl (77 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 77.9/77.9 KB 7.1 MB/s eta 0:00:00
+   Collecting Pillow==8.0.1
+   Downloading Pillow-8.0.1.tar.gz (44.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 MB 9.2 MB/s eta 0:00:00
+   Preparing metadata (setup.py): started
+   Preparing metadata (setup.py): finished with status 'done'
+   Collecting setuptools>=3.0
+   Downloading setuptools-62.6.0-py3-none-any.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 29.3 MB/s eta 0:00:00
+   Collecting urllib3<1.27,>=1.21.1
+   Downloading urllib3-1.26.9-py2.py3-none-any.whl (138 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 139.0/139.0 KB 13.0 MB/s eta 0:00:00
+   Collecting idna<4,>=2.5
+   Downloading idna-3.3-py3-none-any.whl (61 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.2/61.2 KB 4.3 MB/s eta 0:00:00
+   Collecting charset-normalizer~=2.0.0
+   Downloading charset_normalizer-2.0.12-py3-none-any.whl (39 kB)
+   Collecting certifi>=2017.4.17
+   Downloading certifi-2022.6.15-py3-none-any.whl (160 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 160.2/160.2 KB 15.0 MB/s eta 0:00:00
+   Collecting asgiref<4,>=3.4.1
+   Downloading asgiref-3.5.2-py3-none-any.whl (22 kB)
+   Collecting sqlparse>=0.2.2
+   Downloading sqlparse-0.4.2-py3-none-any.whl (42 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.3/42.3 KB 3.4 MB/s eta 0:00:00
+   Using legacy 'setup.py install' for Pillow, since package 'wheel' is not installed.
+   Installing collected packages: urllib3, sqlparse, setuptools, Pillow, idna, charset-normalizer, certifi, asgiref, requests, gunicorn, Django
+   WARNING: The script sqlformat is installed in '/tmp/contents3657964863/deps/0/python/bin' which is not on PATH.
+   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+   Running setup.py install for Pillow: started
+   Running setup.py install for Pillow: still running...
+   Running setup.py install for Pillow: finished with status 'done'
+   WARNING: The script normalizer is installed in '/tmp/contents3657964863/deps/0/python/bin' which is not on PATH.
+   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+   WARNING: The script gunicorn is installed in '/tmp/contents3657964863/deps/0/python/bin' which is not on PATH.
+   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+   WARNING: The script django-admin is installed in '/tmp/contents3657964863/deps/0/python/bin' which is not on PATH.
+   Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
+   Successfully installed Django-4.0.5 Pillow-8.0.1 asgiref-3.5.2 certifi-2022.6.15 charset-normalizer-2.0.12 gunicorn-20.0.4 idna-3.3 requests-2.28.0 setuptools-62.6.0 sqlparse-0.4.2 urllib3-1.26.9
+   Running python /tmp/app/manage.py collectstatic --noinput --traceback
+   128 static files copied to '/tmp/app/static'.
+   Exit status 0
+   Uploading droplet, build artifacts cache...
+   Uploading droplet...
+   Uploading build artifacts cache...
+   Uploaded build artifacts cache (113.1M)
+   Uploaded droplet (72.3M)
+   Uploading complete
+   Cell e6e14676-103b-4105-9e13-019090a8446c stopping instance ea8fe212-6ef2-4487-926b-8ab88fdc27c3
+   Cell e6e14676-103b-4105-9e13-019090a8446c destroying container for instance ea8fe212-6ef2-4487-926b-8ab88fdc27c3
+   Cell e6e14676-103b-4105-9e13-019090a8446c successfully destroyed container for instance ea8fe212-6ef2-4487-926b-8ab88fdc27c3
+
+Waiting for app to start...
+
+name:              rl_djangoapp
+requested state:   started
+routes:            rl_djangoapp.mybluemix.net
+last uploaded:     Tue 21 Jun 18:02:57 UTC 2022
+stack:             cflinuxfs3
+buildpacks:        python
+
+type:            web
+instances:       1/1
+memory usage:    128M
+start command:   gunicorn djangobackend.wsgi
+     state     since                  cpu    memory   disk     details
+#0   running   2022-06-21T18:03:42Z   0.0%   0 of 0   0 of 0   
+
+Creating app rl_djangoapp-nginx...
+Mapping routes...
+Comparing local files to remote cache...
+Packaging files to upload...
+Uploading files...
+ 682.73 KiB / 682.73 KiB [======================================================================] 100.00% 1s
+
+Waiting for API to complete processing files...
+
+Staging app and tracing logs...
+   Downloading staticfile_buildpack...
+   Downloaded staticfile_buildpack
+   Cell e6e14676-103b-4105-9e13-019090a8446c creating container for instance 3cdde688-9433-46c2-8640-68b739cdd34b
+   Security group rules were updated
+   Cell e6e14676-103b-4105-9e13-019090a8446c successfully created container for instance 3cdde688-9433-46c2-8640-68b739cdd34b
+   Downloading app package...
+   Downloaded app package (682.7K)
+   -----> Staticfile Buildpack version 1.5.29
+   -----> Installing nginx
+   Using nginx version 1.21.6
+   -----> Installing nginx 1.21.6
+   Download [https://buildpacks.cloudfoundry.org/dependencies/nginx-static/nginx-static_1.21.6_linux_x64_cflinuxfs3_0ce0c2b1.tgz]
+   **WARNING** nginx 1.21.x will no longer be available in new buildpacks released after 2022-05-25.
+   See: https://nginx.org/
+   -----> Root folder /tmp/app
+   -----> Copying project files into public
+   -----> Configuring nginx
+   Exit status 0
+   Uploading droplet, build artifacts cache...
+   Uploading droplet...
+   Uploading build artifacts cache...
+   Uploaded build artifacts cache (2.4M)
+   Uploaded droplet (3.1M)
+   Uploading complete
+   Cell e6e14676-103b-4105-9e13-019090a8446c stopping instance 3cdde688-9433-46c2-8640-68b739cdd34b
+   Cell e6e14676-103b-4105-9e13-019090a8446c destroying container for instance 3cdde688-9433-46c2-8640-68b739cdd34b
+   Cell e6e14676-103b-4105-9e13-019090a8446c successfully destroyed container for instance 3cdde688-9433-46c2-8640-68b739cdd34b
+
+Waiting for app to start...
+
+name:              rl_djangoapp-nginx
+requested state:   started
+routes:            rl_djangoapp.mybluemix.net/static
+last uploaded:     Tue 21 Jun 18:04:08 UTC 2022
+stack:             cflinuxfs3
+buildpacks:        staticfile
+
+type:            web
+instances:       1/1
+memory usage:    128M
+start command:   $HOME/boot.sh
+     state     since                  cpu    memory   disk     details
+#0   running   2022-06-21T18:05:02Z   0.0%   0 of 0   0 of 0   
