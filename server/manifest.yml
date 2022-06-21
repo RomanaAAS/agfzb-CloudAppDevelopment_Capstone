@@ -1,11 +1,11 @@
   applications:
   - name: rl_djangoapp
     routes:
-      - route: rl_course10_us.mybluemix.net
+      - route: rl_djangoapp.mybluemix.net
     memory: 128M
     buildpack: python_buildpack
   - name: rl_djangoapp-nginx
     routes:
-      - route: rl_course10_us.mybluemix.net/static
+      - route: rl_djangoapp.mybluemix.net/static
     memory: 128M
     buildpack: staticfile_buildpack
