@@ -1,6 +1,7 @@
 import requests
+import os
 import json
-from .models import CarDealer
+from .models import CarDealer, CarReview
 from requests.auth import HTTPBasicAuth
 
 
@@ -87,15 +88,44 @@ def get_dealers_by_state(url, **kwargs):
 
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
-# def get_dealer_by_id_from_cf(url, dealerId):
-# - Call get_request() with specified arguments
-# - Parse JSON results into a DealerView object list
+def get_dealer_reviews_from_cf(url, dealer_id):
+    results = []
+    #Call get_request with a URL parameter
+    json_result = get_request(url, dealerId=dealer_id)
+    if json_result:
+    # Get the row list in JSON as dealers
+        dealers = json_result["docs"]
+        #For each dealer object
+         for dealer in dealers:
+            # Get its content in `doc` object
+            dealer_doc = dealer
+            # Create a CarDealer object with values in `doc` object
+           dealer_obj = DealerReview(
+                id="",
+                name="",
+                dealership=dealer_doc['dealership'],
+                purchase=dealer_doc['purchase'] ,
+                purchase_date=dealer_doc['purchase_date'] if dealer_doc['purchase'] else "",
+                review=dealer_doc['review'],
+                car_make=dealer_doc['car_make'] if dealer_doc['purchase'] else "None",
+                car_model=dealer_doc['car_model'] if dealer_doc['purchase'] else "None",
+                car_year=dealer_doc['car_year'] if dealer_doc['purchase'] else "-",
+                sentiment=analyze_review_sentiments(dealer_doc['review'])
+            )
+            results.append(dealer_obj)
+    return results
 
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
-# def analyze_review_sentiments(text):
-# - Call get_request() with specified arguments
-# - Get the returned sentiment label such as Positive or Negative
+def analyze_review_sentiments(review):
+    params = dict()
+    params["text"] = review
+    params["version"] = "2018-09-21"
+    params["features"] = dict(sentiment=dict())
+    params["return_analyzed_text"] = True
+    params["language"] = "en"
+    url = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/2f1b5cbf-df64-464b-a5c5-79795feb0cb3'
 
-
-
+    response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+                            auth=HTTPBasicAuth('apikey', os.getenv('NLU_API_KEY', 'V4CVkzPbgD79C9VAWJKi17u3B2JRj8IioO-hvXKlxp7l')))
+    return json.loads(response.text)['sentiment']['document']['label']
