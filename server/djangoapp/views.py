@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarMake, CarModel, CarDealer, DealerReview
-from .restapis import get_dealers_from_cf, get_dealers_by_id, get_dealers_by_state
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -83,7 +83,7 @@ def registration_request(request):
 def get_dealerships(request):
     context = {}
     if request.method == "GET":
-        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/dealerships"
+        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/dealerships/dealerships"
         # Get dealers from the URL
         #dealerships = get_dealers_from_cf(url)
         # Concat all dealer's short name
@@ -99,12 +99,14 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         context = {}
-        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/reviews"
+        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/reviews/reviews"
         context['dealer_reviews'] = get_dealer_reviews_from_cf(url, dealer_id)
 
-        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/reviews?id={dealer_id}"
+        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/dealerships/dealerships?id={dealer_id}"
         context['dealerships'] = get_dealers_from_cf(url)
+        #context['full_name'] = current_dealer.full_name
         context['dealer'] = dealer_id
+        
 
         # Return a list of dealer short name
         return render(request, 'djangoapp/dealer_details.html', context)
