@@ -1,6 +1,9 @@
 import requests
 import os
 import json
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 
@@ -72,7 +75,7 @@ def get_dealer_reviews_from_cf(url, dealer_Id):
                 car_make=item['car_make'] if item['purchase'] else "None",
                 car_model=item['car_model'] if item['purchase'] else "None",
                 car_year=item['car_year'] if item['purchase'] else "-",
-                #sentiment=analyze_review_sentiments(item['review'])
+                sentiment=analyze_review_sentiments(item['review'])
                 )
                 results.append(item)
     else:
@@ -83,14 +86,26 @@ def get_dealer_reviews_from_cf(url, dealer_Id):
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(review):
-    params = dict()
-    params["text"] = review
-    params["version"] = "2018-09-21"
-    params["features"] = dict(sentiment=dict())
-    params["return_analyzed_text"] = True
-    params["language"] = "en"
-    url = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/2f1b5cbf-df64-464b-a5c5-79795feb0cb3'
+    authenticator = IAMAuthenticator('V4CVkzPbgD79C9VAWJKi17u3B2JRj8IioO-hvXKlxp7l')
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+        version='2022-04-07', 
+        authenticator=authenticator
+        )
+    NLU_URL = natural_language_understanding.set_service_url('https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/2f1b5cbf-df64-464b-a5c5-79795feb0cb3')
+    #params = dict()
+    #params["text"] = review
+    #params["version"] = '2022-04-07'
+    #params["features"] = dict(sentiment=dict())
+    #params["return_analyzed_text"] = True
+    #params["language"] = "en"
+    response = natural_language_understanding.analyze(text = review, 
+    features=Features(sentiment=SentimentOptions(document = True))).get_result()
 
-    response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
-                            auth=HTTPBasicAuth('apikey', os.getenv('NLU_API_KEY', 'V4CVkzPbgD79C9VAWJKi17u3B2JRj8IioO-hvXKlxp7l')))
-    return json.loads(response.text)['sentiment']['document']['label']
+    print(json.dumps(response['sentiment']['document']['label'], indent=2))
+
+    #response = requests.get(NLU_URL, params=params, headers={'Content-Type': 'application/json'},
+                           # auth=HTTPBasicAuth('apikey', os.getenv('NLU_API_KEY_C10', 'V4CVkzPbgD79C9VAWJKi17u3B2JRj8IioO-hvXKlxp7l')))
+    #response = requests.get(NLU_URL, params=params, headers={'Content-Type': 'application/json'},
+      #                      auth=HTTPBasicAuth("NLU_API_KEY_C10", "V4CVkzPbgD79C9VAWJKi17u3B2JRj8IioO-hvXKlxp7l"))
+    #return json.loads(response)['sentiment']['document']['label']
+    return response['sentiment']['document']['label']

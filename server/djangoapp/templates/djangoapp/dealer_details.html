@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dealership Review</title>
     {% load static %}
+    <title>Dealership Review</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -73,11 +73,17 @@
                        Model Year:  {{ review.car_year }}
                     </h3>
                     <div class="card-text">
-                       Customer Statement: {{ review.review }}
+                        <p> Customer Statement: {{ review.review }}</p>
+                        <p>Sentiment: {{ review.sentiment }}</p>
                     </div>
-                    </h3>
-                    <div class="card-text">
-                        Customer Statement: {{ review.errormsg }}
+                </div>
+            </div>
+            {% empty  %}
+            <div class="card">
+                <div class = "card-body">
+                    <div class = "text">
+                        No reviews available yet.<br>
+                        Please leave a review at href
                     </div>
                 </div>
             </div>
