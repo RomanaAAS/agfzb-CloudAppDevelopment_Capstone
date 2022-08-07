@@ -1,3 +1,4 @@
+from httplib2 import Response
 import requests
 import os
 import json
@@ -6,6 +7,7 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
+import http.client
 
 
 # Create a `get_request` to make HTTP GET requests
@@ -46,13 +48,23 @@ def get_dealers_from_cf(url, **kwargs):
 
     return results
 
-
-
-
-
 # Create a `post_request` to make HTTP POST requests
-# e.g., response = requests.post(url, params=kwargs, json=payload)
+# e.g., 
 
+def post_request(url, json_payload, **kwargs):
+    try:
+        request = requests.post(url,data=json_payload)
+    except:
+        print("Network exception occurred")
+
+    status_code = request.status_code
+    print(request.request.body)
+    print("With status {} ".format(status_code))
+    json_data = json.loads(request.text)
+
+    return status_code
+
+   
 
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 def get_dealer_reviews_from_cf(url, dealer_Id):
@@ -92,20 +104,10 @@ def analyze_review_sentiments(review):
         authenticator=authenticator
         )
     NLU_URL = natural_language_understanding.set_service_url('https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/2f1b5cbf-df64-464b-a5c5-79795feb0cb3')
-    #params = dict()
-    #params["text"] = review
-    #params["version"] = '2022-04-07'
-    #params["features"] = dict(sentiment=dict())
-    #params["return_analyzed_text"] = True
-    #params["language"] = "en"
+
     response = natural_language_understanding.analyze(text = review, 
     features=Features(sentiment=SentimentOptions(document = True))).get_result()
 
-    print(json.dumps(response['sentiment']['document']['label'], indent=2))
+    #print(json.dumps(response['sentiment']['document']['label'], indent=2))
 
-    #response = requests.get(NLU_URL, params=params, headers={'Content-Type': 'application/json'},
-                           # auth=HTTPBasicAuth('apikey', os.getenv('NLU_API_KEY_C10', 'V4CVkzPbgD79C9VAWJKi17u3B2JRj8IioO-hvXKlxp7l')))
-    #response = requests.get(NLU_URL, params=params, headers={'Content-Type': 'application/json'},
-      #                      auth=HTTPBasicAuth("NLU_API_KEY_C10", "V4CVkzPbgD79C9VAWJKi17u3B2JRj8IioO-hvXKlxp7l"))
-    #return json.loads(response)['sentiment']['document']['label']
     return response['sentiment']['document']['label']
