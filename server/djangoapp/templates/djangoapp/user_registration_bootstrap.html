@@ -49,6 +49,7 @@
         <div class="container"> <!--Style root div with .container class -->
             {% csrf_token %}
             <h1>Sign Up</h1>
+            <p> {{error_message}}</p>
             <hr>
             <div class="form-group"> <!--Style second div with .form-group class -->
                 <label for="username"><b>User Name</b></label>

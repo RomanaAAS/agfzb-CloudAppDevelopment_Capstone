@@ -33,6 +33,7 @@
                 <li>
                     <a class="btn btn-link" href="#">({{ user.username }})</a>
                     <a class="btn btn-link" href="{% url 'djangoapp:logout' %}">Logout</a>
+                    <a class="btn btn-link" href="{% url 'djangoapp:add_review' dealer %}">Add Review</a>
                 </li>
                 {% else %}
                 <li>
@@ -53,7 +54,7 @@
     <!-- Add reviews as cards -->
     <div class="container mx-auto my-2 ">
 
-        <h1 class="my-3"><small>Reviews for dealer #{{ dealer}} {{dealer.full_name}} <br></small> 
+        <h1 class="my-3"><small>Reviews for dealer #{{ dealer}} <br></small> 
             {% for dealerdetails in dealerships %}
                 {% if dealerdetails.id == dealer %}
                     {{dealerdetails.full_name}}
@@ -66,15 +67,14 @@
                 <img class="card-img-left m-2" width="30" height="30" src="{{MEDIA_URL}}/emoji/{{ review.sentiment }}.png">
     
                 <div class="card-body">
-                    <h3 class="card-title">
+                    <h4 class="card-title">
                        Bought Car: {{ review.car_model }}, {{ review.car_make }}
-                    </h3>
-                    <h3 class="text">
+                    </h4>
+                    <h4 class="text">
                        Model Year:  {{ review.car_year }}
-                    </h3>
+                    </h4>
                     <div class="card-text">
-                        <p> Customer Statement: {{ review.review }}</p>
-                        <p>Sentiment: {{ review.sentiment }}</p>
+                        <p>Review: {{ review.review }}</p>
                     </div>
                 </div>
             </div>

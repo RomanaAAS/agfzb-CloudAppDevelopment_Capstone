@@ -123,6 +123,7 @@ def add_review(request, dealer_id):
         context['dealerships'] = get_dealers_from_cf(url)
         context['dealer'] = dealer_id
         context['cars'] = CarModel.objects.filter(dealership=dealer_id)
+        print(context['cars'])
 
         return render(request, 'djangoapp/add_review.html', context)
 
@@ -134,16 +135,18 @@ def add_review(request, dealer_id):
         review_payload["dealership"] = dealer_id
         review_payload["name"] = request.POST.get('name', "")
         review_payload["review"] = request.POST.get('review', "")
-        review_payload["purchase"] = request.POST.get('purchase', False)
+        review_payload["purchased"] = request.POST.get('purchased', False)
         #print(review_payload)
 
-        if review_payload['purchase']:
-            car = CarModel.objects.filter(id=int(request.POST.get('car')))[0]
-            review_payload["purchase_date"] = request.POST.get('purchase_date')
+        if review_payload['purchased']:
+            car = CarModel.objects.filter(model_id=int(request.POST.get('car')))[0]
+            review_payload['purchase']= "true"
+            review_payload["purchase_date"] = request.POST.get('purchasedate')
             review_payload["car_model"] = car.name_model
             review_payload["car_year"] = car.year.strftime("%Y")
-            review_payload["car_make"] = car.name_make
+            review_payload["car_make"] = car.name_make.name_make
         else: 
+            review_payload['purchase']= 'false'
             review_payload["purchase_date"] = ''
             review_payload["car_model"] = ''
             review_payload["car_year"] = ''
@@ -153,9 +156,10 @@ def add_review(request, dealer_id):
         response = post_request(url_post,json_payload)
         print(json_payload)
         messages.success(request, 'Thank you for your review')
-        return HttpResponse(response)
+        #return HttpResponse(response)
         #return render(request, "index.html", context)
         return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
     elif request.user.is_authenticated != True:
-        context['message'] = "Please login first!"
+        context={}
+        context['error_message'] = "Please sign up first to leave a review!"
         return render(request, 'djangoapp/user_registration_bootstrap.html', context)   

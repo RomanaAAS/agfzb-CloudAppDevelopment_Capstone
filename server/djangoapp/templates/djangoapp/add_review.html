@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"
+          rel="stylesheet">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+
 
 </head>
     <body>
@@ -47,7 +52,7 @@
             </div>
         </nav>
         
-        <form action="add_review" method="post">
+        <form action="{% url 'djangoapp:add_review' dealer %}" method="post">
             {% csrf_token %}
         
             <div class="container my-3">
@@ -56,7 +61,7 @@
                         {% if dealerdetails.id == dealer %}
                             {{dealerdetails.full_name}}
                         {% endif %}
-                    {% endfor %}{{dealer.full_name}}</h1>
+                    {% endfor %}</h1>
                 <hr>
                 <div class="row">
                 <div class="my-3 col-12 ">
@@ -66,23 +71,28 @@
         
                 <div class=" col-12">
                     <label for="review"><b>Enter the review content:</b></label>
-                    <textarea name="review" id="review" cols="30" rows="5" class="form-control" required></textarea>
+                    <textarea class="form-control" name="review" id="review" cols="30" rows="5"  required></textarea>
                 </div>
         
         
                 <div class="ml-4 my-2  col-12 ">
-                    <input class="form-check-input" type="checkbox" name="purchase" id="purchasecheck" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
-                    <label for="purchasecheck"><b>Has purchased the car from {{dealer}} ? </b> (select purchased car information below if checked)</label>
+                    <input class="form-check-input" type="checkbox" name="purchased" id="purchasecheck" data-toggle="collapse" data-target="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+                    <label for="purchasecheck"><b>Did you purchase a car from 
+                        {% for dealerdetails in dealerships %}
+                            {% if dealerdetails.id == dealer %}
+                                {{dealerdetails.full_name}}
+                            {% endif %}
+                        {% endfor %}? </b> (select purchased car information below if checked)</label>
                 </div>
         
             </div>
         
-                <div class="collapse row full-width" id="collapseExample">
+                <div>
                 <div class="  col-6">
                     <label for="car" class="font-weight-bold d-block">Select your car</label>
                     <select name="car" id="car" class="form-select form-control">
                         {% for car in cars %}
-                        <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}</option>
+                        <option selected value={{car.model_id}}>Model: {{car.name_make.name_make}} {{car.name_model}} - year: {{ car.year|date:"Y" }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -96,10 +106,17 @@
                     <button class="btn btn-info my-2" type="submit">Submit</button>
                 </div>
             </div>
-        </div>
-            
+        </div>    
         </form>
-
+    
+    <script type="text/javascript">
+    $(function () {
+        $('.purchasedate').datepicker({
+            format: 'mm/dd/yyyy'
+        });
+    })
+    </script>
 
     </body>
+
 </html>
