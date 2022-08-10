@@ -86,7 +86,8 @@ def registration_request(request):
 def get_dealerships(request):
     context = {}
     if request.method == "GET":
-        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/dealerships/dealerships"
+        url = "https://90152bc2.eu-gb.apigw.appdomain.cloud/api/dealerships"
+
         # Get dealers from the URL
         #dealerships = get_dealers_from_cf(url)
         # Concat all dealer's short name
@@ -102,10 +103,10 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     if request.method == "GET":
         context = {}
-        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/reviews/reviews"
+        url = "https://90152bc2.eu-gb.apigw.appdomain.cloud/api/reviews"
         context['dealer_reviews'] = get_dealer_reviews_from_cf(url, dealer_id)
 
-        url2 = "https://4f54f776.eu-gb.apigw.appdomain.cloud/dealerships/dealerships"
+        url2 = "https://90152bc2.eu-gb.apigw.appdomain.cloud/api/dealerships"
         context['dealerships'] = get_dealers_from_cf(url2)
         #context['full_name'] = current_dealer.full_name
         context['dealer'] = dealer_id
@@ -119,7 +120,7 @@ def get_dealer_details(request, dealer_id):
 def add_review(request, dealer_id):
     if request.method == "GET":
         context = {}
-        url = "https://4f54f776.eu-gb.apigw.appdomain.cloud/dealerships/dealerships?id={dealer_id}"
+        url = "https://90152bc2.eu-gb.apigw.appdomain.cloud/api/dealership_id?id={dealer_id}"
         context['dealerships'] = get_dealers_from_cf(url)
         context['dealer'] = dealer_id
         context['cars'] = CarModel.objects.filter(dealership=dealer_id)
@@ -128,7 +129,7 @@ def add_review(request, dealer_id):
         return render(request, 'djangoapp/add_review.html', context)
 
     if request.method == "POST" and request.user.is_authenticated:
-        url_post = "https://4f54f776.eu-gb.apigw.appdomain.cloud/submit_review/submit_review"
+        url_post = "https://90152bc2.eu-gb.apigw.appdomain.cloud/api/submit_review"
         context={}
         review_payload = dict()
         #review_payload["time"] = datetime.utcnow().isoformat()

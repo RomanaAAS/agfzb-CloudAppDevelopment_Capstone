@@ -1,4 +1,3 @@
-from httplib2 import Response
 import requests
 import os
 import json
@@ -7,7 +6,6 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
-import http.client
 
 
 # Create a `get_request` to make HTTP GET requests
@@ -53,7 +51,7 @@ def get_dealers_from_cf(url, **kwargs):
 
 def post_request(url, json_payload, **kwargs):
     try:
-        request = requests.post(url,data=json_payload)
+        request = requests.post(url, json=json_payload)
     except:
         print("Network exception occurred")
 
