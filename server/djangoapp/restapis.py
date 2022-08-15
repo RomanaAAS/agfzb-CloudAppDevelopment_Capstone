@@ -60,7 +60,7 @@ def post_request(url, json_payload, **kwargs):
     print("With status {} ".format(status_code))
     json_data = json.loads(request.text)
 
-    return response
+    return request
 
    
 
