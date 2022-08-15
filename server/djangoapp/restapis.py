@@ -51,7 +51,7 @@ def get_dealers_from_cf(url, **kwargs):
 
 def post_request(url, json_payload, **kwargs):
     try:
-        request = requests.post(url, json=json_payload)
+        request = requests.post(url, json=json_payload, params=kwargs)
     except:
         print("Network exception occurred")
 
@@ -60,7 +60,7 @@ def post_request(url, json_payload, **kwargs):
     print("With status {} ".format(status_code))
     json_data = json.loads(request.text)
 
-    return status_code
+    return response
 
    
 
